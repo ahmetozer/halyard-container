@@ -36,7 +36,19 @@ ENV AWS_BINARY_RELEASE_DATE=2020-02-22
 ENV AWS_CLI_VERSION=1.18.18
 
 RUN curl -f -o /usr/local/bin/aws-iam-authenticator  https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/aws-iam-authenticator && \
-  chmod +x /usr/local/bin/aws-iam-authenticator
+    chmod +x /usr/local/bin/aws-iam-authenticator
+
+# INSTALL WGET
+RUN apt update && \
+    apt install wget -y
+
+# INSTALL PACKER
+RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
+    apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
+    apt update && apt install packer -y && \
+    apt clean && \
+    apt autoclean && \
+    find /var/lib/apt/lists/ -maxdepth 1 -type f -print0 | xargs -0 rm
 
 USER spinnaker
 
