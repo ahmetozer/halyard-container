@@ -40,5 +40,5 @@ RUN curl -f -o /usr/local/bin/aws-iam-authenticator  https://amazon-eks.s3.us-we
 USER spinnaker
 
 CMD ["/opt/halyard/bin/halyard"]
-
+WORKDIR /home/spinnaker
 LABEL org.opencontainers.image.source="https://github.com/ahmetozer/halyard-container"
