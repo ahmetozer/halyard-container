@@ -8,15 +8,16 @@ RUN apt update && \
     apt autoclean && \
     find /var/lib/apt/lists/ -maxdepth 1 -type f -print0 | xargs -0 rm
 
-# INSTALL JAVA    
+# INSTALL JAVA  & software-properties-common
 RUN apt update && \
-    apt-get install openjdk-11-jdk -y && \
+    apt-get install openjdk-11-jdk software-properties-common -y && \
     java -version && \
     apt clean && \
     apt autoclean && \
     find /var/lib/apt/lists/ -maxdepth 1 -type f -print0 | xargs -0 rm
 
 WORKDIR /root/
+
 # INSTALL HALYARD
 RUN curl -O https://raw.githubusercontent.com/spinnaker/halyard/master/install/debian/InstallHalyard.sh && \
     adduser --system --uid 1000 --group spinnaker && \
