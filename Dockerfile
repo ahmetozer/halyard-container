@@ -38,9 +38,15 @@ ENV AWS_CLI_VERSION=1.18.18
 RUN curl -f -o /usr/local/bin/aws-iam-authenticator  https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/aws-iam-authenticator && \
     chmod +x /usr/local/bin/aws-iam-authenticator
 
+COPY entrypoint.sh /root/entrypoint.sh
+
 # INSTALL WGET
 RUN apt update && \
-    apt install wget -y
+    apt install wget -y && \
+    apt clean && \
+    apt autoclean && \
+    find /var/lib/apt/lists/ -maxdepth 1 -type f -print0 | xargs -0 rm && \
+    chmod +x /root/entrypoint.sh
 
 # INSTALL PACKER
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
@@ -50,8 +56,6 @@ RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
     apt autoclean && \
     find /var/lib/apt/lists/ -maxdepth 1 -type f -print0 | xargs -0 rm
 
-USER spinnaker
-
-CMD ["/opt/halyard/bin/halyard"]
-WORKDIR /home/spinnaker
+CMD ["/root/entrypoint.sh"]
+WORKDIR /root
 LABEL org.opencontainers.image.source="https://github.com/ahmetozer/halyard-container"
