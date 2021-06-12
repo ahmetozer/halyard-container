@@ -40,9 +40,9 @@ RUN curl -f -o /usr/local/bin/aws-iam-authenticator  https://amazon-eks.s3.us-we
 
 COPY entrypoint.sh /root/entrypoint.sh
 
-# INSTALL WGET
+# INSTALL WGET AND SYSTEMD
 RUN apt update && \
-    apt install wget -y && \
+    apt install wget systemd -y && \
     apt clean && \
     apt autoclean && \
     find /var/lib/apt/lists/ -maxdepth 1 -type f -print0 | xargs -0 rm && \
